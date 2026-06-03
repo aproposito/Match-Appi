@@ -22,4 +22,5 @@ class TeamFactory extends Factory
             'flag' => fake()->url(),
         ];
     }
+    
 }

@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\MatchGame;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MatchPrediction extends Model
-{
+{   use HasFactory;
+
     protected $fillable = [
         'predicted_home_goals',
         'predicted_away_goals',
@@ -20,7 +22,7 @@ class MatchPrediction extends Model
 
     public function matchGame(): BelongsTo
     {
-        return $this->belongsTo(MatchGame::class);
+        return $this->belongsTo(MatchGame::class, 'match_id');
     }
     public function user(): BelongsTo
     {
