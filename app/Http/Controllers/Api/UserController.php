@@ -14,4 +14,15 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function show(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+    
+    if ($request->user()->role !== 'admin' && $request->user()->id !== $user->id) {
+        return response()->json(['message' => 'No autorizado'], 403);
+    }
+    
+    return response()->json($user);
+}
+
 }
