@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\TeamController;
 
 
 
@@ -17,8 +18,8 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('/users/{user}', [UserController::class, 'update']);
-    Route::delete('/users/{user}', [UserController::class, 'update']);       
-
+    Route::delete('/users/{user}', [UserController::class, 'update']);
+    Route::get('/teams', [TeamController::class, 'index']);
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
