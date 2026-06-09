@@ -18,10 +18,11 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('/users/{user}', [UserController::class, 'update']);
-    Route::delete('/users/{user}', [UserController::class, 'update']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
     Route::get('/teams', [TeamController::class, 'index']);
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
+        Route::post('/teams', [TeamController::class, 'store']);
     });
 });

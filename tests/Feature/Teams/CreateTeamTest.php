@@ -13,17 +13,18 @@ class CreateTeamTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_create_teams(): void
-    {
-        $admin = User::factory()->create(['role' => 'admin']);
-        
-        Passport::actingAs($admin);
-        $response = $this->postJson('/api/teams', [
-            'name' => 'España',
-            'flag' => 'https://flagcdn.com/es.svg',
-        ]);
-        $response->assertStatus(201);
-    }
+   public function test_admin_can_create_teams(): void
+{
+    $admin = User::factory()->create(['role' => 'admin']);
+    
+    Passport::actingAs($admin);
+    
+    $response = $this->postJson('/api/teams', [
+        'name' => 'España',
+        'flag' => 'https://flagcdn.com/es.svg',
+    ]);
+    $response->assertStatus(201);
+}
 
     public function test_user_cannot_create_teams(): void
     {
