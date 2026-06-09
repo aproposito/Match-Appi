@@ -23,6 +23,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
-        Route::post('/teams', [TeamController::class, 'store']);
+        Route::post('/teams/', [TeamController::class, 'store']);
+        Route::put('/teams/{user}', [TeamController::class, 'update']);
     });
 });
