@@ -23,7 +23,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
-        Route::post('/teams/', [TeamController::class, 'store']);
-        Route::put('/teams/{user}', [TeamController::class, 'update']);
+        Route::post('/teams', [TeamController::class, 'store']);
+        Route::put('/teams/{team}', [TeamController::class, 'update']);
+        Route::delete('/teams/{team}', [TeamController::class, 'destroy']);
     });
 });

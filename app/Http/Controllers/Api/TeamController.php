@@ -27,4 +27,9 @@ class TeamController extends Controller
         $team->update($request->validated());
         return response()->json(new TeamResource($team));
     }
+    public function destroy(Team $team)
+    {
+        $team->delete();
+        return response()->json(['message' => 'Equipo eliminado'], 200);
+    }
 }
