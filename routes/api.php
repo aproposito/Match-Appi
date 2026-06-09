@@ -15,7 +15,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::get('/users/{id}', [UserController::class, 'show']);    
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::put('/users/{id}', [UserController::class, 'update']);    
 
 
     Route::middleware('admin')->group(function () {
