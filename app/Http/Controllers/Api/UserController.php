@@ -14,27 +14,24 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
-
-        if ($request->user()->role !== 'admin' && $request->user()->id !== $user->id) {
+        if (!$this->authorizeUserAccess($request, $user)) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
         return response()->json($user);
     }
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
-
-        if ($request->user()->role !== 'admin' && $request->user()->id !== $user->id) {
+     
+        if (!$this->authorizeUserAccess($request, $user)) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
         $request->validate([
             'name' => 'sometimes|string',
-            'email' => 'sometimes|email|unique:users,email,' . $id,
+            'email' => 'sometimes|email|unique:users,email,' . $user->id,
             'password' => 'sometimes|min:8|confirmed',
         ]);
 
@@ -42,17 +39,20 @@ class UserController extends Controller
 
         return response()->json($user);
     }
-       
-    public function destroy(Request $request, $id)
+
+    public function destroy(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
-        
-        if ($request->user()->role !== 'admin' && $request->user()->id !== $user->id) {
-        return response()->json(['message' => 'No autorizado'], 403);
+      
+        if (!$this->authorizeUserAccess($request, $user)) {
+            return response()->json(['message' => 'No autorizado'], 403);
         }
         $user->delete();
 
         return response()->json($user);
     }
-}
 
+    private function authorizeUserAccess(Request $request, User $user): bool
+    {
+        return $request->user()->role === 'admin' || $request->user()->id === $user->id;
+    }
+}
