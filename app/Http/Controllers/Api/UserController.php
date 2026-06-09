@@ -42,4 +42,17 @@ class UserController extends Controller
 
         return response()->json($user);
     }
+       
+    public function destroy(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        if ($request->user()->role !== 'admin' && $request->user()->id !== $user->id) {
+        return response()->json(['message' => 'No autorizado'], 403);
+        }
+        $user->delete();
+
+        return response()->json($user);
+    }
 }
+
