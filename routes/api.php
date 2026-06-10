@@ -26,6 +26,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/matches', [MatchGameController::class, 'store']);
     Route::get('/match-predictions', [MatchPredictionController::class, 'index']);
     Route::post('/match-predictions', [MatchPredictionController::class, 'store']);
+    Route::put('/match-predictions/{matchPrediction}', [MatchPredictionController::class, 'update']);
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);

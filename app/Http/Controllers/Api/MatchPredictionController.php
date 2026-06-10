@@ -7,6 +7,8 @@ use App\Http\Requests\StoreMatchPredictionRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\MatchPredictionResource;
 use App\Models\MatchPrediction;
+use App\Http\Requests\UpdateMatchPredictionRequest;
+
 
 
 class MatchPredictionController extends Controller
@@ -31,5 +33,10 @@ public function store(StoreMatchPredictionRequest $request)
     ]);
 
     return response()->json(new MatchPredictionResource($prediction), 201);
+}
+public function update(UpdateMatchPredictionRequest $request, MatchPrediction $matchPrediction)
+{
+    $matchPrediction->update($request->validated());
+    return response()->json(new MatchPredictionResource($matchPrediction));
 }
 }
