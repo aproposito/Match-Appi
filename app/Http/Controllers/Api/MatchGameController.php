@@ -18,7 +18,10 @@ class MatchGameController extends Controller
         if ($request->user()->role === 'admin') {
             $matches = MatchGame::all();
         } else {
-            $matches = MatchGame::whereDate('match_date_time', today())->get();
+            $matches = MatchGame::whereBetween('match_date_time', [
+                now()->startOfDay(),
+                now()->addDay()->setTime(8, 0, 0),
+            ])->get();
         }
 
         return MatchGameResource::collection($matches);
