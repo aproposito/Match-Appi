@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\MatchGameController;
 
 
 
@@ -20,11 +21,16 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
     Route::get('/teams', [TeamController::class, 'index']);
+    Route::get('/matches', [MatchGameController::class, 'index']);
+    Route::post('/matches', [MatchGameController::class, 'store']);
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
         Route::post('/teams', [TeamController::class, 'store']);
         Route::put('/teams/{team}', [TeamController::class, 'update']);
         Route::delete('/teams/{team}', [TeamController::class, 'destroy']);
+        Route::put('/matches/{matchGame}', [MatchGameController::class, 'update']);
+        Route::delete('/matches/{matchGame}', [MatchGameController::class, 'destroy']);
+
     });
 });
