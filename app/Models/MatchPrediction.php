@@ -12,14 +12,15 @@ class MatchPrediction extends Model
 {   use HasFactory;
 
     protected $fillable = [
-        'predicted_home_goals',
-        'predicted_away_goals',
-        'points_sign',
-        'points_home_goals',
-        'points_away_goals',
-        'points_bonus',
-    ];
-
+    'match_id',
+    'user_id',
+    'predicted_home_goals',
+    'predicted_away_goals',
+    'points_sign',
+    'points_home_goals',
+    'points_away_goals',
+    'points_bonus',
+];
     public function matchGame(): BelongsTo
     {
         return $this->belongsTo(MatchGame::class, 'match_id');
