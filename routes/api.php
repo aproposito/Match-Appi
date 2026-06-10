@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\MatchGameController;
+use App\Http\Controllers\Api\MatchPredictionController;
 
 
 
@@ -23,6 +24,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/teams', [TeamController::class, 'index']);
     Route::get('/matches', [MatchGameController::class, 'index']);
     Route::post('/matches', [MatchGameController::class, 'store']);
+    Route::get('/match-predictions', [MatchPredictionController::class, 'index']);
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
@@ -31,6 +33,7 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/teams/{team}', [TeamController::class, 'destroy']);
         Route::put('/matches/{matchGame}', [MatchGameController::class, 'update']);
         Route::delete('/matches/{matchGame}', [MatchGameController::class, 'destroy']);
+        
 
     });
 });
