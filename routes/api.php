@@ -22,6 +22,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
     Route::get('/teams', [TeamController::class, 'index']);
     Route::get('/matches', [MatchGameController::class, 'index']);
+    Route::post('/matches', [MatchGameController::class, 'store']);
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);

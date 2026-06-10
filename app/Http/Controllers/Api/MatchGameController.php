@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
+use App\Http\Requests\StoreMatchRequest;
 
 
 class MatchGameController extends Controller
@@ -21,4 +22,12 @@ public function index(Request $request)
 
     return MatchGameResource::collection($matches);
 }
+public function store(StoreMatchRequest $request)
+{
+    $match = MatchGame::create($request->validated());
+    return response()->json(new MatchGameResource($match), 201);
 }
+
+}
+
+
