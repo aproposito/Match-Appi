@@ -30,6 +30,7 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/teams/{team}', [TeamController::class, 'update']);
         Route::delete('/teams/{team}', [TeamController::class, 'destroy']);
         Route::put('/matches/{matchGame}', [MatchGameController::class, 'update']);
+        Route::delete('/matches/{matchGame}', [MatchGameController::class, 'destroy']);
 
     });
 });

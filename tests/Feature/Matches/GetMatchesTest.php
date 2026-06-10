@@ -20,18 +20,15 @@ class GetMatchesTest extends TestCase
     $response->assertStatus(200);
 }
 
-   public function test_user_can_list_today_teams(): void
+   public function test_user_can_list_today_match(): void
     {
      $user = User::factory()->create(['role' => 'user']);
-             
-
         Passport::actingAs($user);
         $response = $this->getJson('/api/matches');
-
         $response->assertStatus(200);
     }
 
-    public function test_no_authenticate_user_can_list_any_match(): void
+    public function test_no_authenticate_user_can_list_any_match(): void 
     {
         $response = $this->getJson('/api/matches');
         $response->assertStatus(401);

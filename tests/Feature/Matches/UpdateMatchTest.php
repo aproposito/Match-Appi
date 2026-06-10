@@ -28,8 +28,6 @@ class UpdateMatchTest extends TestCase
     {
         $user = User::factory()->create(['role' => 'user']);
         $match = MatchGame::factory()->create();
-
-
         Passport::actingAs($user);
         $response = $this->putJson('/api/matches/'. $match->id);
         $response->assertStatus(403);
