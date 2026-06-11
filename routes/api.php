@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ChampionPredictionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\MatchGameController;
@@ -28,6 +29,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/match-predictions', [MatchPredictionController::class, 'store']);
     Route::put('/match-predictions/{matchPrediction}', [MatchPredictionController::class, 'update']);
     Route::delete('/match-predictions/{matchPrediction}', [MatchPredictionController::class, 'destroy']);
+    Route::get('/champion-predictions', [ChampionPredictionController::class, 'index']);
+    Route::post('/champion-predictions', [ChampionPredictionController::class, 'store']);
+    Route::put('/champion-predictions/{championPrediction}', [ChampionPredictionController::class, 'update']);
+    Route::delete('/champion-predictions/{championPrediction}', [ChampionPredictionController::class, 'destroy']);
+
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
