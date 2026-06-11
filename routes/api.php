@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\MatchGameController;
 use App\Http\Controllers\Api\MatchPredictionController;
-
+use App\Http\Controllers\Api\RankingController;
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -33,6 +33,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/champion-predictions', [ChampionPredictionController::class, 'store']);
     Route::put('/champion-predictions/{championPrediction}', [ChampionPredictionController::class, 'update']);
     Route::delete('/champion-predictions/{championPrediction}', [ChampionPredictionController::class, 'destroy']);
+    Route::get('/ranking', [RankingController::class, 'index']);
 
 
     Route::middleware('admin')->group(function () {
