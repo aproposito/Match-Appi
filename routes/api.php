@@ -30,8 +30,9 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/match-predictions/{matchPrediction}', [MatchPredictionController::class, 'update']);
     Route::delete('/match-predictions/{matchPrediction}', [MatchPredictionController::class, 'destroy']);
     Route::get('/champion-predictions', [ChampionPredictionController::class, 'index']);
+    Route::post('/champion-predictions', [ChampionPredictionController::class, 'store']);
 
-
+    
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
         Route::post('/teams', [TeamController::class, 'store']);
