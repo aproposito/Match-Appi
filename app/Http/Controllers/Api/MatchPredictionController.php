@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\MatchPredictionResource;
 use App\Models\MatchPrediction;
 use App\Http\Requests\UpdateMatchPredictionRequest;
+use App\Models\User;
 
 
 
@@ -39,4 +40,14 @@ public function update(UpdateMatchPredictionRequest $request, MatchPrediction $m
     $matchPrediction->update($request->validated());
     return response()->json(new MatchPredictionResource($matchPrediction));
 }
+ public function destroy(Request $request, MatchPrediction $matchPrediction)
+{
+    if ($request->user()->role !== 'admin' && $request->user()->id !== $matchPrediction->user_id) {
+        return response()->json(['message' => 'No autorizado'], 403);
+    }
+
+    $matchPrediction->delete();
+    return response()->json(['message' => 'Predicción eliminada']);
 }
+    }
+

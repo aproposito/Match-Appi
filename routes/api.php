@@ -27,6 +27,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/match-predictions', [MatchPredictionController::class, 'index']);
     Route::post('/match-predictions', [MatchPredictionController::class, 'store']);
     Route::put('/match-predictions/{matchPrediction}', [MatchPredictionController::class, 'update']);
+    Route::delete('/match-predictions/{matchPrediction}', [MatchPredictionController::class, 'destroy']);
 
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
@@ -35,7 +36,7 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/teams/{team}', [TeamController::class, 'destroy']);
         Route::put('/matches/{matchGame}', [MatchGameController::class, 'update']);
         Route::delete('/matches/{matchGame}', [MatchGameController::class, 'destroy']);
-        
+      
 
     });
 });
