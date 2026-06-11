@@ -22,8 +22,8 @@ class CreateMatchPredictionTest extends TestCase
         Passport::actingAs($user);
         $response = $this->postJson('/api/match-predictions', [
             'match_id' => $match->id,
-            'predicted_home_goal' => 2,
-            'predicted_away_goal' => 1,
+            'predicted_home_goals' => 2,
+            'predicted_away_goals' => 1,
         ]);
 
         $response->assertStatus(201);
@@ -39,8 +39,8 @@ class CreateMatchPredictionTest extends TestCase
         Passport::actingAs($user);
         $response = $this->postJson('/api/match-predictions', [
             'match_id' => $match->id,
-            'predicted_home_goal' => 2,
-            'predicted_away_goal' => 1,
+            'predicted_home_goals' => 2,
+            'predicted_away_goals' => 1,
         ]);
 
         $response->assertStatus(422);
@@ -68,8 +68,8 @@ class CreateMatchPredictionTest extends TestCase
 
         Passport::actingAs($user);
         $response = $this->postJson('/api/match-predictions', [
-            'predicted_home_goal' => 2,
-            'predicted_away_goal' => 1,
+            'predicted_home_goals' => 2,
+            'predicted_away_goals' => 1,
         ]);
 
         $response->assertStatus(422);
@@ -85,7 +85,7 @@ class CreateMatchPredictionTest extends TestCase
         Passport::actingAs($user);
         $response = $this->postJson('/api/match-predictions', [
             'match_id' => $match->id,
-            'predicted_away_goal' => 1,
+            'predicted_away_goals' => 1,
         ]);
 
         $response->assertStatus(422);
@@ -101,7 +101,7 @@ class CreateMatchPredictionTest extends TestCase
         Passport::actingAs($user);
         $response = $this->postJson('/api/match-predictions', [
             'match_id' => $match->id,
-            'predicted_home_goal' => 2,
+            'predicted_home_goals' => 2,
         ]);
 
         $response->assertStatus(422);

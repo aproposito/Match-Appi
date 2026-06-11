@@ -24,7 +24,7 @@ class GetMatchPredictionsTest extends TestCase
 
    public function test_user_can_list_his_predictions(): void
     {
-     $user = User::factory()->create(['role' => 'user']);
+     $user = User::factory()->create();
         Passport::actingAs($user);
         $response = $this->getJson('/api/match-predictions');
         $response->assertStatus(200);

@@ -24,8 +24,8 @@ class StoreMatchPredictionRequest extends FormRequest
                     }
                 },
             ],
-            'predicted_home_goal' => 'required|integer|min:0',
-            'predicted_away_goal' => 'required|integer|min:0',
+            'predicted_home_goals' => 'required|integer|min:0',
+            'predicted_away_goals' => 'required|integer|min:0',
         ];
     }
 }
