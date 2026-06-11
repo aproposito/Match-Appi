@@ -3,8 +3,6 @@
 namespace Tests\Feature\ChampionPrediction;
 
 use App\Models\ChampionPrediction;
-use App\Models\MatchGame;
-use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Passport\Passport;
@@ -18,8 +16,6 @@ class DeleteChampionPredictionTest extends TestCase
     public function test_user_can_delete_his_champion_prediction(): void
       {
         $user = User::factory()->create();
-        $team = Team::factory()->create();
-        MatchGame::factory()->create();
         $prediction = ChampionPrediction::factory()->create([
             'user_id' => $user->id,
         ]);
@@ -44,8 +40,6 @@ class DeleteChampionPredictionTest extends TestCase
     {
         $user = User::factory()->create();
         $otherUser = User::factory()->create();
-        $team = Team::factory()->create();
-        MatchGame::factory()->create();
         $prediction = ChampionPrediction::factory()->create([
             'user_id' => $otherUser->id,
         ]);

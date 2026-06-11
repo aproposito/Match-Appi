@@ -15,38 +15,38 @@ class ChampionPredictionController extends Controller
 {
 
 
-public function index(Request $request)
-{
-    if ($request->user()->role === 'admin') {
-        $predictions = ChampionPrediction::all();
-    } else {
-        $predictions = ChampionPrediction::where('user_id', $request->user()->id)->get();
+    public function index(Request $request)
+    {
+        if ($request->user()->role === 'admin') {
+            $predictions = ChampionPrediction::all();
+        } else {
+            $predictions = ChampionPrediction::where('user_id', $request->user()->id)->get();
+        }
+
+        return ChampionPredictionResource::collection($predictions);
+    }
+    public function store(StoreChampionPredictionRequest $request)
+    {
+        $prediction = ChampionPrediction::create([
+            'user_id' => $request->user()->id,
+            'team_id' => $request->team_id,
+        ]);
+
+        return response()->json(new ChampionPredictionResource($prediction), 201);
+    }
+    public function update(UpdateChampionPredictionRequest $request, ChampionPrediction $championPrediction)
+    {
+        $championPrediction->update($request->validated());
+        return response()->json(new ChampionPredictionResource($championPrediction));
     }
 
-    return ChampionPredictionResource::collection($predictions);
-}
-public function store(StoreChampionPredictionRequest $request)
-{
-    $prediction = ChampionPrediction::create([
-        'user_id' => $request->user()->id,
-        'team_id' => $request->team_id,
-    ]);
+    public function destroy(Request $request, ChampionPrediction $championPrediction)
+    {
+        if ($request->user()->role !== 'admin' && $request->user()->id !== $championPrediction->user_id) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
 
-    return response()->json(new ChampionPredictionResource($prediction), 201);
-}
-public function update(UpdateChampionPredictionRequest $request, ChampionPrediction $championPrediction)
-{
-    $championPrediction->update($request->validated());
-    return response()->json(new ChampionPredictionResource($championPrediction));
-}
-
-public function destroy(Request $request, ChampionPrediction $championPrediction)
-{
-    if ($request->user()->role !== 'admin' && $request->user()->id !== $championPrediction->user_id) {
-        return response()->json(['message' => 'No autorizado'], 403);
+        $championPrediction->delete();
+        return response()->json(['message' => 'Predicción de campeón eliminada']);
     }
-
-    $championPrediction->delete();
-    return response()->json(['message' => 'Predicción de campeón eliminada']);
-}
 }

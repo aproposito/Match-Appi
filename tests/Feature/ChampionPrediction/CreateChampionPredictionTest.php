@@ -30,7 +30,7 @@ class CreateChampionPredictionTest extends TestCase
         $response->assertStatus(201);
     }
 
-    public function test_user_can_create_champion_prediction_after_group_phase(): void
+    public function test_user_cannot_create_champion_prediction_after_group_phase(): void
     {
         $user = User::factory()->create();
         $team = Team::factory()->create();
