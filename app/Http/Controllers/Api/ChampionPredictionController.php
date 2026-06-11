@@ -39,4 +39,14 @@ public function update(UpdateChampionPredictionRequest $request, ChampionPredict
     $championPrediction->update($request->validated());
     return response()->json(new ChampionPredictionResource($championPrediction));
 }
+
+public function destroy(Request $request, ChampionPrediction $championPrediction)
+{
+    if ($request->user()->role !== 'admin' && $request->user()->id !== $championPrediction->user_id) {
+        return response()->json(['message' => 'No autorizado'], 403);
+    }
+
+    $championPrediction->delete();
+    return response()->json(['message' => 'Predicción de campeón eliminada']);
+}
 }

@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/champion-predictions', [ChampionPredictionController::class, 'index']);
     Route::post('/champion-predictions', [ChampionPredictionController::class, 'store']);
     Route::put('/champion-predictions/{championPrediction}', [ChampionPredictionController::class, 'update']);
+    Route::delete('/champion-predictions/{championPrediction}', [ChampionPredictionController::class, 'destroy']);
 
 
     Route::middleware('admin')->group(function () {
