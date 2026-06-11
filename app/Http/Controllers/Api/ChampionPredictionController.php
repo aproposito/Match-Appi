@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreChampionPredictionRequest;
+use App\Http\Requests\UpdateChampionPredictionRequest;
 use App\Http\Resources\ChampionPredictionResource;
 use App\Models\ChampionPrediction;
 use Illuminate\Http\Request;
+
 
 
 class ChampionPredictionController extends Controller
@@ -31,5 +33,10 @@ public function store(StoreChampionPredictionRequest $request)
     ]);
 
     return response()->json(new ChampionPredictionResource($prediction), 201);
+}
+public function update(UpdateChampionPredictionRequest $request, ChampionPrediction $championPrediction)
+{
+    $championPrediction->update($request->validated());
+    return response()->json(new ChampionPredictionResource($championPrediction));
 }
 }
