@@ -23,7 +23,7 @@ class GetUsersTest extends TestCase
 
     public function test_user_cannot_list_every_user(): void
     {
-        $user = User::factory()->create(['role' => 'user']);
+        $user = User::factory()->create();
         
 
         Passport::actingAs($user);

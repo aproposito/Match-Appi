@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        return response()->json($users);
+        return UserResource::collection(User::all());
     }
 
     public function show(Request $request, User $user)
@@ -20,35 +21,26 @@ class UserController extends Controller
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
-        return response()->json($user);
+        return response()->json(new UserResource($user));
     }
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-     
         if (!$this->authorizeUserAccess($request, $user)) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
-        $request->validate([
-            'name' => 'sometimes|string',
-            'email' => 'sometimes|email|unique:users,email,' . $user->id,
-            'password' => 'sometimes|min:8|confirmed',
-        ]);
-
-        $user->update($request->only(['name', 'email', 'password']));
-
-        return response()->json($user);
+        $user->update($request->validated());
+        return response()->json(new UserResource($user));
     }
 
     public function destroy(Request $request, User $user)
     {
-      
         if (!$this->authorizeUserAccess($request, $user)) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
-        $user->delete();
 
-        return response()->json($user);
+        $user->delete();
+        return response()->json(new UserResource($user));
     }
 
     private function authorizeUserAccess(Request $request, User $user): bool

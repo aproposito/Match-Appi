@@ -15,25 +15,20 @@ class GetTeamsTest extends TestCase
 public function test_admin_can_list_every_team(): void
 {
     $admin = User::factory()->create(['role' => 'admin']);
-    Team::factory()->count(3)->create();
 
     Passport::actingAs($admin);
     $response = $this->getJson('/api/teams');
     $response->assertStatus(200);
 }
-
     public function test_user_can_list_every_team(): void
     {
-     $user = User::factory()->create(['role' => 'user']);
-     Team::factory()->count(3)->create();
+     $user = User::factory()->create();
         
-
         Passport::actingAs($user);
         $response = $this->getJson('/api/teams');
 
         $response->assertStatus(200);
     }
-
     public function test_no_authenticate_user_can_list_any_user(): void
     {
         $response = $this->getJson('/api/teams');
