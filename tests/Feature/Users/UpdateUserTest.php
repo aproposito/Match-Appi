@@ -27,7 +27,7 @@ class UpdateUserTest extends TestCase
 
     public function test_user_can_update_his_own_profile(): void
     {
-        $user = User::factory()->create(['role' => 'user']);
+        $user = User::factory()->create();
 
 
         Passport::actingAs($user);
@@ -40,7 +40,7 @@ class UpdateUserTest extends TestCase
     }
     public function test_user_cannot_update_any_other_user_profile(): void
     {
-        $user = User::factory()->create(['role' => 'user']);
+        $user = User::factory()->create();
         $otherUser = User::factory()->create();
 
 
