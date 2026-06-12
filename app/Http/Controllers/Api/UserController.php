@@ -5,54 +5,46 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        return response()->json($users);
+        return UserResource::collection(User::all());
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
-
-        if ($request->user()->role !== 'admin' && $request->user()->id !== $user->id) {
+        if (!$this->authorizeUserAccess($request, $user)) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
-        return response()->json($user);
+        return response()->json(new UserResource($user));
     }
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $user = User::findOrFail($id);
-
-        if ($request->user()->role !== 'admin' && $request->user()->id !== $user->id) {
+        if (!$this->authorizeUserAccess($request, $user)) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
-        $request->validate([
-            'name' => 'sometimes|string',
-            'email' => 'sometimes|email|unique:users,email,' . $id,
-            'password' => 'sometimes|min:8|confirmed',
-        ]);
-
-        $user->update($request->only(['name', 'email', 'password']));
-
-        return response()->json($user);
+        $user->update($request->validated());
+        return response()->json(new UserResource($user));
     }
-       
-    public function destroy(Request $request, $id)
+
+    public function destroy(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
-        
-        if ($request->user()->role !== 'admin' && $request->user()->id !== $user->id) {
-        return response()->json(['message' => 'No autorizado'], 403);
+        if (!$this->authorizeUserAccess($request, $user)) {
+            return response()->json(['message' => 'No autorizado'], 403);
         }
+
         $user->delete();
+        return response()->json(new UserResource($user));
+    }
 
-        return response()->json($user);
+    private function authorizeUserAccess(Request $request, User $user): bool
+    {
+        return $request->user()->role === 'admin' || $request->user()->id === $user->id;
     }
 }
-
