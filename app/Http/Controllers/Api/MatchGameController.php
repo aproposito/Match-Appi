@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\MatchResultRecorded;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\MatchGameResource;
@@ -34,6 +35,9 @@ class MatchGameController extends Controller
     public function update(UpdateMatchRequest $request, MatchGame $matchGame)
     {
         $matchGame->update($request->validated());
+        if ($matchGame->final_home_goals !== null && $matchGame->final_away_goals !== null) {
+            MatchResultRecorded::dispatch($matchGame);
+        }
         return response()->json(new MatchGameResource($matchGame));
     }
     public function destroy(MatchGame $matchGame)
