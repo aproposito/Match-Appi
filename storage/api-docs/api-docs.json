@@ -1,0 +1,860 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Match-Appi API",
+        "description": "API REST para la porra del Mundial 2026",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "summary": "Login de usuario",
+                "operationId": "3daefae8ab9db04a3e3733ac2f179307",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@matchappi.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token de acceso"
+                    },
+                    "401": {
+                        "description": "Credenciales incorrectas"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "summary": "Cierre de sesión",
+                "operationId": "e8f41ce482d4ed9b9cca0eb0c09403e0",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/champion-predictions": {
+            "get": {
+                "summary": "Lista predicciones de campeón (admin: todas, user: la suya)",
+                "operationId": "8910c808a3aa1e56507a8005c90d4cd1",
+                "responses": {
+                    "200": {
+                        "description": "Lista de predicciones de campeón"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Crear predicción de campeón (solo user, durante fase de grupos)",
+                "operationId": "03fc13b0dfe7262802f0a275ad2145b1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "team_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Predicción de campeón creada"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación o fase de grupos terminada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/champion-predictions/{championPrediction}": {
+            "put": {
+                "summary": "Actualizar predicción de campeón (solo propietario, durante fase de grupos)",
+                "operationId": "b336d33fe058aab6333a881985aa9d1b",
+                "parameters": [
+                    {
+                        "name": "championPrediction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "team_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Predicción de campeón actualizada"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Fase de grupos terminada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Eliminar predicción de campeón (propietario o admin)",
+                "operationId": "61ad2bb4725b14ee4b38d93632316f9a",
+                "parameters": [
+                    {
+                        "name": "championPrediction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Predicción de campeón eliminada"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Predicción no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/matches": {
+            "get": {
+                "summary": "Lista partidos (admin: todos, user: próximos)",
+                "operationId": "c4c07f0162b623add6206bfe95f9b37c",
+                "responses": {
+                    "200": {
+                        "description": "Lista de partidos"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Crear partido (solo admin)",
+                "operationId": "279f1679408a5ad1a87830c865e4c9b9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "home_team_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "away_team_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "phase": {
+                                        "type": "string",
+                                        "example": "groups"
+                                    },
+                                    "match_date_time": {
+                                        "type": "string",
+                                        "example": "2026-06-22 23:00:00"
+                                    },
+                                    "final_home_goals": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "final_away_goals": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Partido creado"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/matches/{matchGame}": {
+            "put": {
+                "summary": "Actualizar partido (solo admin)",
+                "operationId": "56ce041f4f42584c85f61eb2cefa14a7",
+                "parameters": [
+                    {
+                        "name": "matchGame",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "home_team_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "away_team_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "phase": {
+                                        "type": "string",
+                                        "example": "groups"
+                                    },
+                                    "match_date_time": {
+                                        "type": "string",
+                                        "example": "2026-06-22 23:00:00"
+                                    },
+                                    "final_home_goals": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "final_away_goals": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Partido actualizado"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Partido no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Eliminar partido (solo admin)",
+                "operationId": "7a87d6186878e7ac01b8fccc16f20bf4",
+                "parameters": [
+                    {
+                        "name": "matchGame",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Partido eliminado"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Partido no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/match-predictions": {
+            "get": {
+                "summary": "Lista predicciones (admin: todas, user: las suyas)",
+                "operationId": "09d7afebbc4263c0a7b1e0107a38290e",
+                "responses": {
+                    "200": {
+                        "description": "Lista de predicciones"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Crear predicción de partido (solo user)",
+                "operationId": "b47e3563e65ab945a1b4770a87a20c5c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "match_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "predicted_home_goals": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "predicted_away_goals": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Predicción creada"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación o partido ya empezado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/match-predictions/{matchPrediction}": {
+            "put": {
+                "summary": "Actualizar predicción (solo propietario)",
+                "operationId": "5b2ef9229012c0c773cd331f49ab56cb",
+                "parameters": [
+                    {
+                        "name": "matchPrediction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "predicted_home_goals": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "predicted_away_goals": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Predicción actualizada"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Partido ya empezado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Eliminar predicción (propietario o admin)",
+                "operationId": "3d02e5d520aaa39f28033a3a57035a65",
+                "parameters": [
+                    {
+                        "name": "matchPrediction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Predicción eliminada"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Predicción no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/ranking": {
+            "get": {
+                "summary": "Ranking general de usuarios ordenado por puntos totales",
+                "operationId": "7114491dc1d6795aad53d76ce93aa7db",
+                "responses": {
+                    "200": {
+                        "description": "Ranking de usuarios con puntos"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/teams": {
+            "get": {
+                "summary": "Lista todos los equipos",
+                "operationId": "c670238853ec3a3117dbec73032ec126",
+                "responses": {
+                    "200": {
+                        "description": "Lista de equipos"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Crear equipo (solo admin)",
+                "operationId": "4941f3c784ffd96605f0689a9281a00c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "España"
+                                    },
+                                    "flag": {
+                                        "type": "string",
+                                        "example": "https://flagcdn.com/es.svg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Equipo creado"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/teams/{team}": {
+            "put": {
+                "summary": "Actualizar equipo (solo admin)",
+                "operationId": "e64fae208770779808d104281029000f",
+                "parameters": [
+                    {
+                        "name": "team",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "España"
+                                    },
+                                    "flag": {
+                                        "type": "string",
+                                        "example": "https://flagcdn.com/es.svg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Equipo actualizado"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Equipo no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Eliminar equipo (solo admin)",
+                "operationId": "7d373e90f0ca1d76bb6bf185277e8c64",
+                "parameters": [
+                    {
+                        "name": "team",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Equipo eliminado"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Equipo no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "summary": "Lista todos los usuarios (solo admin)",
+                "operationId": "566aed8efb436ca506e0ef51a032ecd9",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuarios"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "summary": "Ver perfil de usuario",
+                "operationId": "6f51bd5fa2dddcd25e44cfa53dcbd10a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Perfil de usuario"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Actualizar perfil de usuario",
+                "operationId": "070e37fc9aff78ae73860751bc990ed3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nuevo nombre"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "nuevo@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuario actualizado"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Eliminar usuario",
+                "operationId": "0b4133ed462528a5e648b88ead11e929",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario eliminado"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}

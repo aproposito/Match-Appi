@@ -6,11 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserRankingResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 
 
 class RankingController extends Controller
 {
+    #[OA\Get(
+    path: '/api/ranking',
+    summary: 'Ranking general de usuarios ordenado por puntos totales',
+    security: [['bearerAuth' => []]],
+    responses: [
+        new OA\Response(response: 200, description: 'Ranking de usuarios con puntos'),
+        new OA\Response(response: 401, description: 'No autenticado'),
+    ]
+)]
 public function index()
 {
     $users = User::with(['matchPredictions', 'championPrediction'])->get();
