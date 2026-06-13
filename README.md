@@ -1,58 +1,200 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Match-Appi ⚽
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST para la porra del Mundial 2026. Los usuarios predicen resultados de partidos,
+acumulan puntos y compiten en un ranking general.
 
-## About Laravel
+Proyecto desarrollado como ejercicio S5.01 del Bootcamp FullStack PHP
+en IT Academy Barcelona Activa.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🛠 Tecnologías
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Backend:** PHP 8.5 · Laravel 13.8 · Eloquent ORM
+- **Base de datos:** MySQL
+- **Autenticación:** Laravel Passport (OAuth2)
+- **Testing:** PHPUnit · TDD
+- **Documentación:** Swagger (L5-Swagger)
+- **Herramientas:** Composer · Git · GitFlow
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## ✨ Funcionalidades
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Autenticación con tokens OAuth2 via Laravel Passport
+- Sistema de roles: `admin` y `user`
+- CRUD completo de equipos y partidos (solo admin)
+- Predicción de resultados de partidos (bloqueada al iniciar el partido)
+- Predicción del campeón del Mundial (editable durante la fase de grupos)
+- Cálculo automático de puntos al introducir el resultado real (Events/Listeners)
+- Ranking general calculado en tiempo real
+- Documentación interactiva con Swagger UI
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 🗃 Modelo de datos
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Entidades principales: `users` · `teams` · `matches` · `match_predictions` · `champion_predictions`
+
+---
+
+## 📡 Endpoints
+
+| Método | URL | Acceso | Descripción |
+|--------|-----|--------|-------------|
+| POST | `/api/register` | Público | Registro de usuario |
+| POST | `/api/login` | Público | Login, devuelve token |
+| POST | `/api/logout` | Auth | Cierre de sesión |
+| GET | `/api/users` | Admin | Lista todos los usuarios |
+| GET | `/api/users/{id}` | Admin/Propietario | Ver perfil |
+| PUT | `/api/users/{id}` | Admin/Propietario | Editar perfil |
+| DELETE | `/api/users/{id}` | Admin/Propietario | Eliminar usuario |
+| GET | `/api/teams` | Auth | Lista equipos |
+| POST | `/api/teams` | Admin | Crear equipo |
+| PUT | `/api/teams/{id}` | Admin | Actualizar equipo |
+| DELETE | `/api/teams/{id}` | Admin | Eliminar equipo |
+| GET | `/api/matches` | Auth | Admin: todos · User: próximos |
+| POST | `/api/matches` | Admin | Crear partido |
+| PUT | `/api/matches/{id}` | Admin | Actualizar partido / introducir resultado |
+| DELETE | `/api/matches/{id}` | Admin | Eliminar partido |
+| GET | `/api/match-predictions` | Auth | Admin: todas · User: las suyas |
+| POST | `/api/match-predictions` | User | Crear predicción |
+| PUT | `/api/match-predictions/{id}` | Propietario | Editar predicción |
+| DELETE | `/api/match-predictions/{id}` | Admin/Propietario | Eliminar predicción |
+| GET | `/api/champion-predictions` | Auth | Admin: todas · User: la suya |
+| POST | `/api/champion-predictions` | User | Crear predicción de campeón |
+| PUT | `/api/champion-predictions/{id}` | Propietario | Editar predicción de campeón |
+| DELETE | `/api/champion-predictions/{id}` | Admin/Propietario | Eliminar predicción de campeón |
+| GET | `/api/ranking` | Auth | Ranking general por puntos |
+
+---
+
+## 🚀 Instalación
+
+### Requisitos previos
+
+- PHP >= 8.2
+- Composer
+- MySQL
+
+### Pasos
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clonar el repositorio
+git clone https://github.com/aproposito/Match-Appi.git
+cd match-appi
 
-php artisan boost:install
+# 2. Instalar dependencias PHP
+composer install
+
+# 3. Configurar variables de entorno
+cp .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Edita `.env` con tus credenciales de base de datos:
 
-## Contributing
+```env
+DB_DATABASE=match_appi
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# 4. Ejecutar migraciones y seeders
+php artisan migrate --seed
 
-## Code of Conduct
+# 5. Instalar Passport
+php artisan passport:install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 6. Iniciar el servidor
+php artisan serve
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🧪 Testing
 
-## License
+El proyecto sigue metodología **TDD** — los tests se escriben antes del código.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+# Ejecutar todos los tests
+php artisan test
+```
+
+### Configuración del entorno de test
+
+Crea un archivo `.env.testing` con una base de datos separada:
+
+```env
+DB_DATABASE=match_appi_test
+```
+
+```bash
+# Migrar la base de datos de test
+php artisan migrate --env=testing
+```
+
+### Credenciales de prueba
+
+| Rol | Email | Contraseña |
+|-----|-------|------------|
+| Admin | admin@matchappi.com | password |
+| Usuario | user@matchappi.com | password |
+
+---
+
+## 🏗 Arquitectura
+
+El proyecto sigue el patrón **API REST** con las siguientes capas:
+
+```
+app/
+├── Http/
+│   ├── Controllers/Api/   # Controladores de la API
+│   ├── Requests/          # Form Requests (validación y autorización)
+│   └── Resources/         # API Resources (transformación JSON)
+├── Events/                # Eventos (MatchResultRecorded)
+├── Listeners/             # Listeners (CalculateMatchPoints)
+├── Services/              # Lógica de negocio (PointsCalculatorService)
+└── Models/                # Eloquent ORM
+```
+
+---
+
+## 📋 Sistema de puntuación
+
+| Acierto | Puntos |
+|---------|--------|
+| Resultado (signo) | 50 |
+| Goles equipo local exactos | 20 + 5 por cada gol > 2 |
+| Goles equipo visitante exactos | 20 + 5 por cada gol > 2 |
+| Acertar el campeón del Mundial | 150 |
+
+El cálculo se dispara automáticamente cuando el admin introduce el resultado real de un partido, mediante el patrón **Events/Listeners**.
+
+---
+
+## 📖 Documentación
+
+La documentación interactiva está disponible tras instalar el proyecto localmente en:
+
+```
+http://localhost:8000/api/documentation
+```
+
+Para probar los endpoints autenticados en Swagger UI:
+
+1. Usa `POST /api/login` con las credenciales de prueba
+2. Copia el token devuelto
+3. Pulsa el botón **Authorize** (🔒) en la parte superior
+4. Pega el token con formato: `Bearer {token}`
+
+---
+
+## 👤 Autor
+
+**Álvaro Martínez Aldama**
+[LinkedIn](https://www.linkedin.com/in/alvaro-martinez-aldama/) · [GitHub](https://github.com/aproposito/)
+
+Proyecto académico — IT Academy Barcelona Activa · Sprint 5 · 2026
