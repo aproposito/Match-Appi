@@ -21,6 +21,7 @@ public function run(): void
         UsersSeeder::class,
         TeamsSeeder::class,
         MatchesSeeder::class,
+        PredictionsSeeder::class,
     ]);
 }
 }

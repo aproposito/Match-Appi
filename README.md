@@ -107,7 +107,11 @@ php artisan migrate --seed
 # 5. Instalar Passport
 php artisan passport:install
 
-# 6. Iniciar el servidor
+# 6. Crear cliente de acceso personal
+php artisan passport:client --personal
+
+
+# 7. Iniciar el servidor
 php artisan serve
 ```
 
@@ -116,11 +120,6 @@ php artisan serve
 ## 🧪 Testing
 
 El proyecto sigue metodología **TDD** — los tests se escriben antes del código.
-
-```bash
-# Ejecutar todos los tests
-php artisan test
-```
 
 ### Configuración del entorno de test
 
@@ -133,6 +132,11 @@ DB_DATABASE=match_appi_test
 ```bash
 # Migrar la base de datos de test
 php artisan migrate --env=testing
+```
+
+```bash
+# Ejecutar todos los tests
+php artisan test
 ```
 
 ### Credenciales de prueba
@@ -171,7 +175,8 @@ app/
 | Goles equipo visitante exactos | 20 + 5 por cada gol > 2 |
 | Acertar el campeón del Mundial | 150 |
 
-El cálculo se dispara automáticamente cuando el admin introduce el resultado real de un partido, mediante el patrón **Events/Listeners**.
+El cálculo se dispara automáticamente cuando el admin introduce el resultado real de un partido, mediante
+**Events/Listeners**. de Laravel (implementación del patrón Observer).
 
 ---
 
