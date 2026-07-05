@@ -13,11 +13,11 @@ class MatchPredictionResource extends JsonResource
         'id' => $this->id,
         'match_id' => $this->match_id,
         'user_id' => $this->user_id,
-        'predicted_home_goal' => $this->predicted_home_goal,
-        'predicted_away_goal' => $this->predicted_away_goal,
+        'predicted_home_goals' => $this->predicted_home_goals,
+        'predicted_away_goals' => $this->predicted_away_goals,
         'points_sign' => $this->points_sign,
-        'points_home_goal' => $this->points_home_goal,
-        'points_away_goal' => $this->points_away_goal,
+        'points_home_goals' => $this->points_home_goals,
+        'points_away_goals' => $this->points_away_goals,
         'points_bonus' => $this->points_bonus,
     ];
 }

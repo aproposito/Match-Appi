@@ -126,5 +126,36 @@ class MatchesSeeder extends Seeder
         ];
 
         MatchGame::insert($matches);
+        // Partidos "demo": fechas relativas a hoy para que el user vea contenido
+        // en cualquier día que se pruebe la app (ventana de GET /matches).
+        $demoMatches = [
+            // Terminado ayer, con resultado → alimenta ranking e historial
+            [
+                'home_team_id' => 22,
+                'away_team_id' => 23,
+                'phase' => 'groups',
+                'match_date_time' => now()->subDay()->format('Y-m-d H:i:s'),
+                'final_home_goals' => 2,
+                'final_away_goals' => 1,
+            ],
+            // Por jugar hoy → el user lo ve y puede apostar
+                       [
+                'home_team_id' => 7,
+                'away_team_id' => 37,
+                'phase' => 'groups',
+                'match_date_time' => now()->addHours(3)->format('Y-m-d H:i:s'),
+                'final_home_goals' => null,
+                'final_away_goals' => null,
+            ],
+            [
+                'home_team_id' => 12,
+                'away_team_id' => 34,
+                'phase' => 'groups',
+                'match_date_time' => now()->addHours(6)->format('Y-m-d H:i:s'),
+                'final_home_goals' => null,
+                'final_away_goals' => null,
+            ],
+        ];
+                MatchGame::insert($demoMatches);
     }
 }
