@@ -176,7 +176,7 @@ app/
 | Acertar el campeón del Mundial | 150 |
 
 El cálculo se dispara automáticamente cuando el admin introduce el resultado real de un partido, mediante
-**Events/Listeners**. de Laravel (implementación del patrón Observer).
+**Events/Listeners** de Laravel (implementación del patrón Observer).
 
 ---
 
