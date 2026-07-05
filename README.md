@@ -104,8 +104,8 @@ DB_PASSWORD=
 # 4. Ejecutar migraciones y seeders
 php artisan migrate --seed
 
-# 5. Instalar Passport
-php artisan passport:install
+# 5. Generar las claves de cifrado de Passport
+php artisan passport:keys
 
 # 6. Crear cliente de acceso personal
 php artisan passport:client --personal
